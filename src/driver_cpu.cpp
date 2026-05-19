@@ -107,17 +107,18 @@ namespace CPUAnalysis
     const auto callback = [](PassBuilder &PB)
     {
       PB.registerOptimizerLastEPCallback(
-          [&](ModulePassManager &MPM, OptimizationLevel opt)
-          {
+[&](ModulePassManager &MPM, OptimizationLevel opt, ThinOrFullLTOPhase phase)
+{
 #ifdef FPC_DEBUG
-            std::string fname =
-                "Optimzation Level: " + std::to_string(opt.getSpeedupLevel());
-            CUDAAnalysis::Logging::info(fname.c_str());
+    std::string fname =
+        "Optimzation Level: " + std::to_string(opt.getSpeedupLevel());
+    CUDAAnalysis::Logging::info(fname.c_str());
 #endif
-            // MPM.addPass(createModuleToFunctionPassAdaptor(CPUKernelAnalysis()));
-            MPM.addPass(CPUKernelAnalysis());
-            return true;
-          });
+    // MPM.addPass(createModuleToFunctionPassAdaptor(CPUKernelAnalysis()));
+    MPM.addPass(CPUKernelAnalysis());
+}
+
+          );
     };
 
     return {LLVM_PLUGIN_API_VERSION, "CPUKernelAnalysis", "0.5", callback};
