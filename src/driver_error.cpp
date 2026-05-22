@@ -101,7 +101,7 @@ namespace CPUAnalysis
     const auto callback = [](PassBuilder &PB)
     {
       PB.registerOptimizerLastEPCallback(
-          [&](ModulePassManager &MPM, OptimizationLevel opt)
+          [&](ModulePassManager &MPM, OptimizationLevel opt, ThinOrFullLTOPhase)
           {
 #ifdef FPC_DEBUG
             std::string fname =
